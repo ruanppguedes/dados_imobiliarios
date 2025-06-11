@@ -3,9 +3,14 @@ from dash import dcc, html, dash_table
 from dash.dependencies import Input, Output
 import plotly.express as px
 import pandas as pd
+import os
+
+# Caminho absoluto para o CSV, baseado neste arquivo
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+csv_path = os.path.join(BASE_DIR, 'data', 'raw', 'dados_imobiliarios.csv')
 
 # Carregar os dados
-df = pd.read_csv('../data/raw/dados_imobiliarios.csv')
+df = pd.read_csv(csv_path)
 
 # Inicializar o app
 app = dash.Dash(__name__)
@@ -75,5 +80,5 @@ def update_dashboard(regiao):
 
 # Rodar o app
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    port = int(os.environ.get('PORT', 8050))
+    app.run_server(debug=False, host='0.0.0.0', port=port)
